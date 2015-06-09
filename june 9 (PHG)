@@ -1,0 +1,147 @@
+import controlP5.*;
+//Imported library that makes the sliders
+ControlP5 MC;
+//Name of the object for the controlP5 library
+//Starting x position of where the y ticks start
+int yTickstart=120;
+//Ending x position of where the y ticks end
+int yTickend=110;
+//Starting y position of where the x ticks start
+int xTickstart=100;
+//Ending y position of where the x ticks end
+int xTickend=90;
+//Amount subtracted or added between ticks
+float tickSpacing=77.5;
+//Y position of the text on the x axis. 
+int xTextpos=85;
+//X position of the text on the y axis. 
+int yTextpos=75;
+Slider minimumHeight, maximumHeight;
+float minHeight, maxHeight;
+float scaledMinheight, scaledMaxheight;
+
+void setup() {
+  size(1000, 1000);
+
+  PFont pfont=createFont("ArialMT", 12, true);
+  ControlFont font1=new ControlFont(pfont, 0);
+  //background();
+
+  MC=new ControlP5(this); 
+
+  minimumHeight = MC.addSlider("minimum_Height", 0, 6000, 0, 670, 50, 100, 15);
+  MC.getController("minimum_Height")
+    .getCaptionLabel()
+      .setFont(font1)
+        .setSize(15)
+          ;
+  maximumHeight= MC.addSlider("maximum_Height", 0, 40000, 0, 670, 20, 100, 15);
+  MC.getController("maximum_Height")
+    .getCaptionLabel()
+      .setFont(font1)
+        .setSize(15)
+          ;
+  //Adds the sliders for the variables
+  fill(0);
+  stroke(0);
+  //Bottom x axis line
+  rect(120, 875, width-280, height-999);
+
+  //fill(0);
+  //This alligns the Y axis text to the center and rotates it 
+  textAlign(CENTER, BOTTOM);
+  pushMatrix();
+  translate(width-980, height-520);
+  rotate(-HALF_PI);
+  text("Elevation (masl)", 0, 0);
+  popMatrix();
+  PFont font;
+  // The font must be located in the sketch's 
+  // "data" directory to load successfully 
+
+  font = loadFont("ArialMT-12.vlw");
+  textFont(font, 12);
+  text("Probable release", width-525, 50);
+  // fill(0);
+
+
+
+
+
+  //fill(0);
+  //Y axis line (elevation)
+  rect(yTickstart, 100, width-999, 875-100);
+  //Y axis tick marks (0-50000)
+  line(yTickstart, 875, yTickend, 875);
+  line(yTickstart, 875-tickSpacing, yTickend, 875-tickSpacing);
+  line(yTickstart, 797.5-tickSpacing, yTickend, 797.5-tickSpacing);
+  line(yTickstart, 720-tickSpacing, yTickend, 720-tickSpacing);
+  line(yTickstart, 642.5-tickSpacing, yTickend, 642.5-tickSpacing);
+  line(yTickstart, 565-tickSpacing, yTickend, 565-tickSpacing);
+  line(yTickstart, 487.5-tickSpacing, yTickend, 487.5-tickSpacing);
+  line(yTickstart, 410-tickSpacing, yTickend, 410-tickSpacing);
+  line(yTickstart, 332.5-tickSpacing, yTickend, 332.5-tickSpacing);
+  line(yTickstart, 255-tickSpacing, yTickend, 255-tickSpacing);
+  line(yTickstart, 177.5-tickSpacing, yTickend, 177.5-tickSpacing);
+
+
+  //The right most y axis line
+  rect(840, 100, width-999, 875-100);
+
+
+
+  //Top x axis line
+  rect(120, xTickstart, width-280, height-999);
+  //Top x axis tick marks
+  line(120, xTickstart, 120, xTickend);
+  line(480, xTickstart, 480, xTickend);
+  line(840, xTickstart, 840, xTickend);
+
+
+
+  //0 mark applied to both axis
+  text(0, yTextpos+20, 875+4);
+  //X axis labels
+  text(-1, 120, xTextpos);
+  text(0, 480, xTextpos);
+  text(1, 840, xTextpos);
+
+  //Y axis labels
+  text(4000, yTextpos, 797.5+4);
+  text(8000, yTextpos, 720+4);
+  text(12000, yTextpos, 642.5+4);
+  text(16000, yTextpos, 565+4);
+  text(20000, yTextpos, 487.5+4);
+  text(24000, yTextpos, 410+4);
+  text(28000, yTextpos, 332.5+4);
+  text(32000, yTextpos, 255+4);
+  text(36000, yTextpos, 177.5+4);
+  text(40000, yTextpos, 100+4);
+
+  fill(108, 54, 13);
+  triangle(480, 876, 380, height, 580, height);
+}
+
+//replace this later based on screen dimensions
+
+
+void draw () {
+  fill(255);
+  rect(120, 100, 720, 775);
+
+
+  minHeight = (float)minimumHeight.getValue();
+  maxHeight = (float)maximumHeight.getValue();
+  maximumHeight.setMin(minHeight);
+  scaledMinheight=minHeight/40000.0*775;
+
+  scaledMaxheight=maxHeight/40000.0*775;
+
+  fill(0xFFF5C3C3);
+
+  //Top hat rect(x position, x axis position-scaled min height,width,
+  rect(width/4, 875-(scaledMinheight), width/2, -1*(scaledMaxheight-scaledMinheight));
+  //Distance from vent
+  rect(465, 875, 30, -minHeight/40000.0*775);
+}
+//Adjust widths in its own function and call it in draw
